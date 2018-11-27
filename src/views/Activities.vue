@@ -103,6 +103,7 @@
         let token = sessionStorage.getItem('token')
         // window.open(`http://data.m-th.cn/hpkp-manage/#/?activityId=${activityId}&name=${name}&token=${token}`, '_blank')
 
+        // window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}`, '_blank')
         window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}`, '_blank')
       }
     },
