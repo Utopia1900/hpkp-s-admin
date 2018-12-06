@@ -110,7 +110,7 @@
 </script>
 <style>
   html {
-    background: url(../assets/building.jpg) no-repeat;
+    background: #f5f3ef;
     background-size: cover;
     width: 100%;
     height: 100%;
