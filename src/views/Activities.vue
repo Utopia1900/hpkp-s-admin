@@ -11,7 +11,7 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.name}}</td>
-          <td class="text-xs-center">{{ props.item.type}}</td>
+          <td class="text-xs-center">{{ formatType(props.item.type)}}</td>
           <td class="text-xs-center">{{ formatDate(props.item.createdAt) }}</td>
           <td class="text-xs-center">{{ props.item.isLimited ? '是':'否'}}</td>
           <td class="text-xs-center" v-if="props.item.formalTime">
@@ -95,6 +95,14 @@
         let parseDate = Date.parse(date)
         let reqDate = (new Date(parseDate)).FormatDate('yyyy-MM-dd')
         return reqDate
+      },
+      formatType (type) {
+        switch (type) {
+          case 0:
+             return '房源'
+          case 1:
+             return '车位'   
+        }
       },
       goToManageActivity (activityId, name, activityType) {
         let token = sessionStorage.getItem('token')
