@@ -11,17 +11,14 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.name}}</td>
+          <td class="text-xs-center">{{ props.item.type}}</td>
           <td class="text-xs-center">{{ formatDate(props.item.createdAt) }}</td>
-          <td class="text-xs-center">{{ props.item.desc }}</td>
           <td class="text-xs-center">{{ props.item.isLimited ? '是':'否'}}</td>
           <td class="text-xs-center" v-if="props.item.formalTime">
             {{props.item.formalTime.start}}&nbsp;&nbsp;<span style="color:#2196f3;">至</span>&nbsp;&nbsp;{{props.item.formalTime.end}}
           </td>
-          <td class="text-xs-center" v-else>
-
-          </td>
           <td class="text-xs-center" v-if="props.item.testTime">
-            <ul v-for="(item, index) in props.item.testTime" >
+            <ul v-for="(item, index) in props.item.testTime" :key="index">
               <li>{{item.start}}&nbsp;&nbsp;<span style="color:#2196f3;">至</span>&nbsp;&nbsp;{{item.end}}</li>
             </ul>
           </td>
@@ -29,7 +26,7 @@
 
           </td>
           <td class="text-xs-center">
-            <v-btn color="info" @click="goToManageActivity(props.item.id, props.item.name)">前往活动管理</v-btn>
+            <v-btn color="info" @click="goToManageActivity(props.item.id, props.item.name, props.item.type)">前往活动管理</v-btn>
           </td>
         </template>
       </v-data-table>
@@ -52,8 +49,8 @@
       errmsg: '错误提示',
       headers: [
         {text: '活动名称', align: 'center', value: 'name', sortable: false},
+        {text: '活动类型', align: 'center', value: 'type', sortable: false},
         {text: '创建日期', align: 'center', value: 'createTime', sortable: false},
-        {text: '描述', align: 'center', value: 'desc', sortable: false},
         {text: '是否限购', align: 'center', value: 'isLimited', sortable: false},
         {text: '正式时间', align: 'center', value: 'formalTime', sortable: false},
         {text: '测试时间', align: 'center', value: 'testTime', sortable: false},
@@ -99,10 +96,10 @@
         let reqDate = (new Date(parseDate)).FormatDate('yyyy-MM-dd')
         return reqDate
       },
-      goToManageActivity (activityId, name) {
+      goToManageActivity (activityId, name, activityType) {
         let token = sessionStorage.getItem('token')
-//        window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin`, '_blank')
-        window.open(`/suAdmin/manage/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin`, '_blank')
+       window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin&activityType=${activityType}`, '_blank')
+        // window.open(`/suAdmin/manage/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin`, '_blank')
       }
     },
     mounted() {
