@@ -11,6 +11,7 @@
       >
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.name}}</td>
+          <td class="text-xs-center">{{ props.item.project}}</td>
           <td class="text-xs-center">{{ formatType(props.item.type)}}</td>
           <td class="text-xs-center">{{ formatDate(props.item.createdAt) }}</td>
           <td class="text-xs-center">{{ props.item.isLimited ? '是':'否'}}</td>
@@ -49,6 +50,7 @@
       errmsg: '错误提示',
       headers: [
         {text: '活动名称', align: 'center', value: 'name', sortable: false},
+        {text: '楼盘名称', align: 'center', value: 'project', sortable: false},
         {text: '活动类型', align: 'center', value: 'type', sortable: false},
         {text: '创建日期', align: 'center', value: 'createTime', sortable: false},
         {text: '是否限购', align: 'center', value: 'isLimited', sortable: false},
@@ -106,8 +108,8 @@
       },
       goToManageActivity (activityId, name, activityType) {
         let token = sessionStorage.getItem('token')
-       window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin&activityType=${activityType}`, '_blank')
-        // window.open(`/suAdmin/manage/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin`, '_blank')
+      //  window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin&activityType=${activityType}`, '_blank')
+        window.open(`/suAdmin/manage/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin&activityType=${activityType}`, '_blank')
       }
     },
     mounted() {
