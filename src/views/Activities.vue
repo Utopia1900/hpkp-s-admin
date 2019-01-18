@@ -103,13 +103,13 @@
           case 0:
              return '房源'
           case 1:
-             return '车位'   
+             return '车位'
         }
       },
       goToManageActivity (activityId, name, activityType) {
         let token = sessionStorage.getItem('token')
-      //  window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin&activityType=${activityType}`, '_blank')
-        window.open(`/suAdmin/manage/#/?activityId=${activityId}&name=${name}&token=${token}&type=s-admin&activityType=${activityType}`, '_blank')
+        window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}&activityType=${activityType}`, '_blank')
+//        window.open(`/suAdmin/manage/#/?activityId=${activityId}&name=${name}&token=${token}&activityType=${activityType}`, '_blank')
       }
     },
     mounted() {
