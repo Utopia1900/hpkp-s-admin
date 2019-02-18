@@ -1,5 +1,6 @@
 <template>
   <div>
+    <title>登录</title>
     <v-layout>
       <div style="width: 400px;margin: 15% auto">
         <v-card class="cardBg">

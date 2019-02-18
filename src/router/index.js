@@ -4,9 +4,7 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import AppHome from '@/views/AppHome'
 import Activities from '@/views/Activities'
-/*import CreateActivity from '@/views/CreateActivity'
-import CurrentMenuInfo from '@/views/CurrentMenuInfo'
-import AddOpeningMenu from '@/views/AddOpeningMenu'*/
+import Manage from '@/views/Manage'
 Vue.use(Router)
 
 export default new Router({
@@ -18,16 +16,21 @@ export default new Router({
     },
     {
       path: '/home',
-      name: '首页',
+      name: 'home',
       component: AppHome,
       redirect: '/home/activities',
       children: [
         {
           path: '/home/activities',
-          name: '活动列表',
+          name: 'activities',
           component: Activities
         }
       ]
+    },
+    {
+      path: '/manage',
+      name: 'manage',
+      component: Manage
     }
   ]
 })

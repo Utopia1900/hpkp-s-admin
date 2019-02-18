@@ -1,5 +1,6 @@
 <template>
   <div>
+    <title>活动列表</title>
     <h2 style="text-align: center; padding: 8px;">所有活动</h2>
     <v-flex xs12 sm12 class="my-1">
       <v-data-table
@@ -27,7 +28,8 @@
 
           </td>
           <td class="text-xs-center">
-            <v-btn color="info" @click="goToManageActivity(props.item.id, props.item.name, props.item.type)">前往活动管理</v-btn>
+            <v-btn color="info" @click="goToManageActivity(props.item.id, props.item.title, props.item.type)">前往活动管理
+            </v-btn>
           </td>
         </template>
       </v-data-table>
@@ -101,15 +103,45 @@
       formatType (type) {
         switch (type) {
           case 0:
-             return '房源'
+            return '房源'
           case 1:
-             return '车位'
+            return '车位'
         }
       },
-      goToManageActivity (activityId, name, activityType) {
+      goToManageActivity (activityId, activityTitle, activityType) {
         let token = sessionStorage.getItem('token')
-        window.open(`http://localhost:8088/#/?activityId=${activityId}&name=${name}&token=${token}&activityType=${activityType}`, '_blank')
-//        window.open(`/suAdmin/manage/#/?activityId=${activityId}&name=${name}&token=${token}&activityType=${activityType}`, '_blank')
+        const {href} = this.$router.resolve({
+          name: 'manage'
+        })
+        if (token) {
+          let formData = {
+            token: token,
+            activityId: activityId
+          };
+          let options = {
+            method: "POST",
+            headers: {
+              "content-type": "application/json"
+            },
+            data: JSON.stringify(formData),
+            url: config.preHttp + "getActivityToken"
+          };
+          axios(options)
+            .then(response => {
+              let data = response.data;
+              if (!data.errcode) {
+                window.sessionStorage.setItem("activityToken", data.token);
+                window.sessionStorage.setItem("activityType", activityType)
+                window.sessionStorage.setItem("activityTitle", activityTitle)
+                window.open(href, '_blank')
+              } else {
+                alert(`${data.errmsg}`);
+              }
+            })
+            .catch(error => {
+              alert(error);
+            });
+        }
       }
     },
     mounted() {
@@ -119,8 +151,8 @@
 </script>
 
 <style>
-td {
-  color:#000;
-  font-weight: bold;
-}
+  td {
+    color: #000;
+    font-weight: bold;
+  }
 </style>
