@@ -1,4 +1,5 @@
 var path = require('path')
+const utils = require('./utils')
 var webpack = require('webpack')
 
 module.exports = {
@@ -16,12 +17,11 @@ module.exports = {
           'vue-style-loader',
           'css-loader'
         ],
-      },      {
+      }, {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-          }
+          loaders: {}
           // other vue-loader options go here
         }
       },
@@ -32,16 +32,24 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader',
+        loader: 'url-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
+      // {
+      //   test: /\.(png|jpg|gif|svg)$/,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: '[name].[ext]?[hash]'
+      //   }
+      // },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        use:{
+        use: {
           loader: "url-loader",
-          query:{
+          query: {
             limit: 10000,
             name: 'fonts/[name]--[folder].[ext]',
             publicPath: process.env.NODE_ENV === 'production' ? './dist/' : '/dist/'
