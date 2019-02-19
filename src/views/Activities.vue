@@ -1,6 +1,5 @@
 <template>
   <div>
-    <title>活动列表</title>
     <h2 style="text-align: center; padding: 8px;">所有活动</h2>
     <v-flex xs12 sm12 class="my-1">
       <v-data-table

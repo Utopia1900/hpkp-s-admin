@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    <title>超级管理后台</title>
     <app-header />
     <v-content>
       <router-view />
