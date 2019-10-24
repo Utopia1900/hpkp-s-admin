@@ -2,8 +2,8 @@
   <div>
     <title>登录</title>
     <v-layout>
-      <div style="width: 400px;margin: 15% auto">
-        <v-card class="cardBg">
+      <div>
+        <v-card class="login_container">
           <h2 style="padding-top:15px">超级管理员后台</h2>
           <v-form ref="form" v-model="valid" lazy-validation style="padding:15px">
             <v-text-field v-model="username" :rules="usernameRules" label="账号" required="">
@@ -26,7 +26,7 @@
       <v-dialog v-model="addMenuDialog" max-width="450px" >
         <v-card style="padding-top: 30px;background: #d6d6d6fa;color: #000;">
           {{errmsg}}
-          <v-card-actions>
+          <v-card-actions>   
             <v-spacer></v-spacer>
             <v-btn color="red" flat @click.native="addMenuDialog = false">关闭</v-btn>
           </v-card-actions>
@@ -118,8 +118,13 @@
   }
 </style>
 <style scope>
-  .cardBg {
+  .login_container {
     background-color: #fff;
+    width: 320px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .card {

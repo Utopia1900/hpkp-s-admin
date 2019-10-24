@@ -69,7 +69,8 @@ module.exports = {
     historyApiFallback: true,
     noInfo: true,
     overlay: true,
-    port: 8090
+    port: 8090,
+    // contentBase:'./dist'
   },
   performance: {
     hints: false

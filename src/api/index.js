@@ -229,6 +229,28 @@ const API = {
             // do something
         })
     },
+    handleSetBuyDelay(token, guestIds, delay, successCb){ // 设置购买延迟
+       let formData = {token, guestIds, delay}
+       const options = {
+        method: 'POST',
+        headers: {'content-type': 'application/json'},
+        data: JSON.stringify(formData),
+        url: config.preHttp + 'setBuyDelay' 
+       }
+       axios(options).then(response => {
+         if(successCb) successCb(response.data) 
+       }).catch(error => {
+         
+       })
+    },
+
+    // queryAssignRooms(){
+
+    // },
+
+    // queryNotRigidRooms(){
+
+    // },
     formatMoney (s, n) {
         n = n > 0 && n <= 20 ? n : 0
         s = parseFloat((s + '').replace(/[^\d.-]/g, '')).toFixed(n) + ''
