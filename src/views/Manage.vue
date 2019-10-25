@@ -107,25 +107,26 @@
       </div>
     </div>
     <div class="room-page-footer">
-      <!--废除一键销控接口-->
+      <!--废除 一键销控接口-->
       <!-- <v-btn
               color="blue-grey darken-1"
               style="color:#fff;"
               @click.native="clearDirectDialog = true"
       >清除一键销控
       </v-btn>-->
-      <v-btn
+      <!--屏蔽 清除非刚需房源-->
+      <!-- <v-btn
         v-show="activityType=='0'"
         color="blue-grey darken-1"
         style="color:#fff;"
         @click.native="clearNotRigidDialog = true"
-      >清除非刚需房源</v-btn>
+      >清除非刚需房源</v-btn>-->
       <v-btn
         color="blue-grey darken-1"
         style="color:#fff;"
         @click.native="clearAssignDialog = true"
       >清除关联客户</v-btn>
-      <v-btn color="blue-grey darken-1" style="color: #fff;" @click="goToQuerySold">查看已售</v-btn>
+      <v-btn color="blue-grey darken-1" style="color: #fff;" @click="goToQuerySold">查看房源信息</v-btn>
       <v-btn color="green darken-1" style="color: #fff;" @click="queryGuest('resetPwd')">客户管理</v-btn>
     </div>
 
@@ -320,7 +321,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="guestDialog" persistent scrollable max-width="700px">
+    <v-dialog v-model="guestDialog" persistent scrollable max-width="800px">
       <!--<v-btn slot="activator" color="primary" dark>Open Dialog</v-btn>-->
       <v-card>
         <v-card-title>
@@ -336,8 +337,11 @@
             @click.native="searchGuest('guest')"
           >查询客户</v-btn>
         </div>
-
-        <v-card-text style="height: 400px;padding: 0">
+        <p style="text-align:left;text-indent:25px;">
+          查询到&nbsp;
+          <span style="color: green">{{guestList.length}}</span>&nbsp;条数据:
+        </p>
+        <v-card-text style="height: 400px;padding: 0;">
           <v-list v-show="guestList.length !=0">
             <v-list-tile style="color:#858585;border-bottom:1px solid #858585">
               <span
@@ -345,10 +349,19 @@
                 :class="{guestDefault: !isActive, guestSelected: isActive}"
                 @click="allChoose()"
               ></span>
-              <span style="width: 20%; display: inline-block;text-align: left">账号</span>
-              <span style="width: 20%; display: inline-block;text-align: left">客户姓名</span>
-              <span style="width: 30%; display: inline-block;">手机号</span>
-              <span style="width: 20%; display: inline-block;">状态</span>
+              <span style="width: 25%; display: inline-block;text-align: left">账号</span>
+              <span style="width: 15%; display: inline-block;text-align: left">客户姓名</span>
+              <span style="width: 25%; display: inline-block;">手机号</span>
+              <span style="width: 20%; display: inline-block;">
+                状态
+                <span class="sortBtn" @click="sortDownGuestlistByStatus()">↑</span>
+                <span class="sortBtn" @click="sortUpGuestlistByStatus()">↓</span>
+              </span>
+              <span style="width: 15%; display: inline-block;">
+                延时(秒)
+                <span class="sortBtn" @click="sortDownGuestlistByDelay()">↑</span>
+                <span class="sortBtn" @click="sortUpGuestlistByDelay()">↓</span>
+              </span>
             </v-list-tile>
           </v-list>
           <v-list v-for="(item, index) in guestList" style="padding: 0" :key="index">
@@ -358,13 +371,17 @@
                 @click="chooseGuest(item.id, $event, index)"
                 :class="{guestDefault: !isActive, guestSelected: isActive}"
               ></span>
-              <span style="width: 20%; display: inline-block;text-align: left">{{item.account}}</span>
-              <span style="width: 20%; display: inline-block;text-align: left">{{item.name}}</span>
-              <span style="width: 30%;display: inline-block">{{item.mobile}}</span>
+              <span style="width: 25%; display: inline-block;text-align: left">{{item.account}}</span>
+              <span style="width: 15%; display: inline-block;text-align: left">{{item.name}}</span>
+              <span style="width: 25%;display: inline-block">{{item.mobile}}</span>
               <span
                 style="width: 20%;display: inline-block"
-                :style="{color:item.disabled?'#E53935': '#512DA8'}"
+                :style="{color:item.disabled?'#E53935': '#000'}"
               >{{formatStatus(item.disabled)}}</span>
+              <span
+                style="width: 15%;display: inline-block"
+                :style="{color: item.delay !== 0 ? 'red' : '#000'}"
+              >{{item.delay}}</span>
             </v-list-tile>
           </v-list>
           <h4 v-show="hasGuest" style="color: #888;height: 300px; line-height: 300px;">未检索到符合条件的信息</h4>
@@ -403,7 +420,7 @@
               style="color:#fff;"
               @click="setDelayDialog = true"
               :disabled="clickedGuestIds.length === 0"
-            >设置购买延迟</v-btn>
+            >设置购买延时</v-btn>
           </div>
         </v-card-actions>
       </v-card>
@@ -421,6 +438,7 @@
             style="color: #fff;"
             @click.native="searchGuest('assignGuest')"
           >查询客户</v-btn>
+          <!-- <v-text-field style="width: 460px;margin-left: 20px;" label="输入客户姓名快捷检索" v-model="search"></v-text-field> -->
         </div>
 
         <v-card-text style="height: 400px;padding: 0">
@@ -556,9 +574,9 @@ export default {
       return tmp;
     },
     guestSearchFilter() {
-      let self = this;
+      // let self = this;
       return this.guestList.filter(args => {
-        return args.name.indexOf(self.search) >= 0;
+        return args.name.indexOf(this.search) >= 0;
       });
     },
     type: function() {
@@ -1023,12 +1041,21 @@ export default {
     },
     handleSetDelay() {
       let self = this;
-      let token = window.sessionStorage.getItem("token");
+      let token = window.sessionStorage.getItem("activityToken");
       let guestIds = this.clickedGuestIds;
-      let delay = parseInt(this.delay)
+      let delay = parseInt(this.delay);
       API.handleSetBuyDelay(token, guestIds, delay, data => {
         if (!data.errcode) {
           self.errmsg = "【设置购买延时】成功";
+          self.delay = 0;
+          for (let i = 0; i < guestIds.length; i++) {
+            for (let j = 0; j < self.guestList.length; j++) {
+              if (guestIds[i] === self.guestList[j].id) {
+                self.guestList[j].delay = delay;
+                break;
+              }
+            }
+          }
           let guestSelectedObj = window.document.getElementsByClassName(
             "guestSelected"
           );
@@ -1136,6 +1163,27 @@ export default {
       });
     },
 
+    sortUpGuestlistByStatus() {
+      this.guestList = this.guestList.sort((a, b) => {
+        return a.disabled ? -1 : 1;
+      });
+    },
+    sortDownGuestlistByStatus() {
+      this.guestList = this.guestList.sort((a, b) => {
+        return a.disabled ? 1 : -1;
+      });
+    },
+    sortUpGuestlistByDelay() {
+      this.guestList = this.guestList.sort((a, b) => {
+        return a.delay - b.delay;
+      });
+    },
+    sortDownGuestlistByDelay() {
+      this.guestList = this.guestList.sort((a, b) => {
+        return b.delay - a.delay;
+      });
+    },
+
     goToQuerySold() {
       let token = window.sessionStorage.getItem("activityToken");
       window.open(`/suAdmin/soldRooms/?token=${token}`);
@@ -1171,6 +1219,21 @@ export default {
 };
 </script>
 <style>
+.sortBtn {
+  width: 15px;
+  display: inline-block;
+  text-align: center;
+  padding: 2px;
+  font-weight: bold;
+  color: #1e88e5;
+}
+.sortBtn:hover {
+  cursor: pointer;
+  background-color: #b3d4fc;
+}
+.sortBtn:active {
+  background-color: #ccc;
+}
 .activebuilding {
   border-bottom: 2px solid #e50000;
   color: #e50000;
